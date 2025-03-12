@@ -1,1 +1,7 @@
 Map Poject
+Design plan
+map input: rows columns map#
+
+
+Read map in and store in the queue and stack
+put everything in stack and queue
