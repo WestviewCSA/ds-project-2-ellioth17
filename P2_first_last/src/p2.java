@@ -7,9 +7,10 @@ public class p2 {
 	
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-	    String filename = "H:\\git\\ds-project-2-Nishk04-1\\P2_first_last\\src\\TestMaze01";
-		readMap("TestMaze01");
+	    String filename = "Maze1";
+		readMap(filename);
 	}
+	//public Tile(int rownum, int rowcol, )
 	
 	public static void readMap(String filename) {
 		try {

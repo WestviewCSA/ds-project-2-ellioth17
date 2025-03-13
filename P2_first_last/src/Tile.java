@@ -4,13 +4,12 @@ public class Tile {
 		private boolean visited;
 		private String output;
 		
-		public Tile(int row, int col, char type, String output) {
+		public Tile(int row, int col, char type) {
 			super();
 			this.row = row;
 			this.col = col;
 			this.type = type;
 			this.visited = false;
-			this.output = output;
 		}
 		public int getRow() {
 			return row;
@@ -39,7 +38,7 @@ public class Tile {
 		}
 		
 		public String toString() {
-			return output;
+			return getType() +"";
 		}
 }
 
