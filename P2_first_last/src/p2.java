@@ -5,7 +5,7 @@ import java.util.Scanner;
 public class p2 {
 	private static Scanner scanner;
 	private int rows, cols, maps;
-	public ArrayList[][] stackx = new ArrayList[][](); //why broken? this is curious
+	//public ArrayList[][] stackx = new ArrayList[][](); //why broke
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 	    String filename = "Maze1";

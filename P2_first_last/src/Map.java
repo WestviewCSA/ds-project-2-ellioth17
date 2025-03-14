@@ -16,7 +16,7 @@ public class Map {
 	public void setTile(int row, int col, int oom, Tile obj) {
 		map[row][col][room] = obj;
 	}
-	public Strin returnMaze() {
+	public String returnMaze() {
 		String maze = "";
 	}
 	//get my maze into an array
