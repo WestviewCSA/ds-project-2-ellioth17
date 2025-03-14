@@ -1,6 +1,6 @@
 
 public class Map {
-	private Tile[][][] map; //rows, cols
+	private Tile[][][] map; //rows, cols, number of rooms
 	private int row;
 	private int col;
 	private int levels;
@@ -9,10 +9,15 @@ public class Map {
 		this.row = xrow;
 		this.col = xcol;
 		this.levels = xlevels;
-		
+		map[row][col][levels] = obj;
 		
 	}
 	//getters and setters
-	readMap("Maze1");
+	public void setTile(int row, int col, int oom, Tile obj) {
+		map[row][col][room] = obj;
+	}
+	public Strin returnMaze() {
+		String maze = "";
+	}
 	//get my maze into an array
 }

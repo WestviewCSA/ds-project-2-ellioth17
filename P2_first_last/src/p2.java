@@ -1,10 +1,11 @@
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
 import java.util.Scanner;
 public class p2 {
 	private static Scanner scanner;
 	private int rows, cols, maps;
-	
+	public ArrayList[][] stackx = new ArrayList[][](); //why broken? this is curious
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 	    String filename = "Maze1";
@@ -30,6 +31,7 @@ public class p2 {
 					for(int col = 0; col < numCols && col < row.length(); col++) {
 						char element = row.charAt(col);
 						Tile obj = new Tile(rowIndex, col, element);
+						stackx.push(obj);
 					}
 				}
 			}
@@ -37,6 +39,7 @@ public class p2 {
 		} catch (FileNotFoundException e){
 			System.out.println(e);
 		}
+		
 	}
 	
 	public static void readCoordinateMap(String filename) {
