@@ -13,11 +13,14 @@ public class Map {
 		
 	}
 	//getters and setters
-	public void setTile(int row, int col, int oom, Tile obj) {
-		map[row][col][room] = obj;
+	public void setTile(int row, int col, int level, Tile obj) {
+		map[row][col][level] = obj;
 	}
 	public String returnMaze() {
 		String maze = "";
+		for(int level = 0; level<this.xlevels; level++) {
+			
+		}
 	}
 	//get my maze into an array
 }
