@@ -9,18 +9,16 @@ public class Map {
 		this.row = xrow;
 		this.col = xcol;
 		this.levels = xlevels;
-		map[row][col][levels] = obj;
-		
 	}
 	//getters and setters
 	public void setTile(int row, int col, int level, Tile obj) {
 		map[row][col][level] = obj;
 	}
-	public String returnMaze() {
+	/*public String returnMaze() {
 		String maze = "";
-		for(int level = 0; level<this.xlevels; level++) {
+		for(int level = 0; level < this.xlevels; level++) {
 			
 		}
-	}
+	}*/
 	//get my maze into an array
 }

@@ -3,12 +3,11 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Scanner;
 public class p2 {
-	private static Scanner scanner;
-	private int rows, cols, maps;
+	public static Map maze;
 	//public ArrayList[][] stackx = new ArrayList[][](); //why broke
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-	    String filename = "Maze1";
+	    String filename = "H:\\git\\ds-project-2-ellioth17\\P2_first_last\\src\\Maze1";
 		readMap(filename);
 	}
 	//public Tile(int rownum, int rowcol, )
@@ -31,8 +30,10 @@ public class p2 {
 					for(int col = 0; col < numCols && col < row.length(); col++) {
 						char element = row.charAt(col);
 						Tile obj = new Tile(rowIndex, col, element);
-						stackx.push(obj);
+						maze = new Map(numRows, numCols, numRooms);
+						maze.setTile(col, rowIndex, numRooms, obj);
 					}
+					rowIndex++;
 				}
 			}
 			
