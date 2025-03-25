@@ -11,9 +11,16 @@ public class Map {
 		this.levels = xlevels;
 	}
 	//getters and setters
-	public void setTile(int row, int col, int level, Tile obj) {
-		map[row][col][level] = obj;
+	public void setTile(Tile obj) {
+		int rows = obj.getRow();
+		int cols = obj.getCol();
+		int rooms = obj.getLevel();
+	    if (rows >= 0 && rows < row && cols >= 0 && cols < col && rooms >= 0 && rooms < levels) {
+	        map[row][col][levels] = obj;
+	    } 
+		
 	}
+
 	/*public String returnMaze() {
 		String maze = "";
 		for(int level = 0; level < this.xlevels; level++) {

@@ -1,5 +1,5 @@
 public class Tile {
-		private int row, col;
+		private int row, col, level;
 		private char type;
 		private boolean visited;
 		private String output;
@@ -36,7 +36,9 @@ public class Tile {
 		public void setVisited(boolean visited) {
 			this.visited = visited;
 		}
-		
+		public int getLevel() {
+			return this.level;
+		}
 		public String toString() {
 			return getType() +"";
 		}

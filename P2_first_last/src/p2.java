@@ -31,7 +31,7 @@ public class p2 {
 						char element = row.charAt(col);
 						Tile obj = new Tile(rowIndex, col, element);
 						maze = new Map(numRows, numCols, numRooms);
-						maze.setTile(col, rowIndex, numRooms, obj);
+						maze.setTile(obj);
 					}
 					rowIndex++;
 				}
