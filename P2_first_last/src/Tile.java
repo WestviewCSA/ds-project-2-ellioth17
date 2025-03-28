@@ -9,6 +9,7 @@ public class Tile {
 			this.row = row;
 			this.col = col;
 			this.type = type;
+			this.level = 0;
 			this.visited = false;
 		}
 		public int getRow() {
@@ -36,6 +37,9 @@ public class Tile {
 		public void setVisited(boolean visited) {
 			this.visited = visited;
 		}
+		public boolean isVisited() {
+			return visited;
+		}
 		public int getLevel() {
 			return this.level;
 		}
@@ -43,7 +47,3 @@ public class Tile {
 			return getType() +"";
 		}
 }
-
-
-
-
