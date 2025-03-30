@@ -6,24 +6,68 @@ import java.util.Queue;
 import java.util.Scanner;
 import java.util.Stack;
 public class p2 {
-	static boolean Incoordinate;
-	static boolean Outcoordinate;
-	static boolean Opt;
-	static boolean Time;
-	static boolean Help;
+	static boolean Incoordinate = false;
+	static boolean Outcoordinate = true;
+	static boolean Opt = false;
+	static boolean Time = true;;
+	static boolean Help = false;
+	static boolean Stack = true;
+	static boolean Queue = false;
 	static Map currentMap;
 	static Map altMap;
 	//public ArrayList[][] stackx = new ArrayList[][](); //why broke
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-	    String filename = "C:\\Users\\Elliot Ho\\git\\New folder\\ds-project-2-ellioth17\\P2_first_last\\TEST\\Maze1";
-		readMap(filename);
-		stackSolver();
-		//queueSolver();
-	}
+	    String filename = "C:\\Users\\Elliot Ho\\git\\New folder\\ds-project-2-ellioth17\\P2_first_last\\TEST\\TEST03";
+	    //processCommandLineArgs(args);
+
+        if (Help) {
+            printHelpMessage();
+            System.exit(0);
+        }
+
+        if ((Stack && Queue) || (Stack && Opt)) {
+            System.out.println("Error: Only one of --Stack, --Queue, or --Opt is able to be specified.");
+            System.exit(-1);
+        }
+
+        if (!Stack && !Queue && !Opt) {
+            System.out.println("Error: One of --Stack, --Queue, or --Opt needs to be specified.");
+            System.exit(-1);
+        }
+	    if (Incoordinate) {
+	        readCoordinateMap(filename);
+	    } else if (Outcoordinate) {
+	        readtextMap(filename);
+	    }
+	 // Queuesolver time
+	    if (Time) { 
+            if (Stack) { 
+                long stackstart = System.currentTimeMillis();
+                stackSolver();
+                long stackend = System.currentTimeMillis();
+                double sduration = (stackend - stackstart) / 1000.0;
+                System.out.println("Total Runtime: " + sduration + " seconds");
+            } else if (Queue || Opt) {
+                long queuestart = System.currentTimeMillis();
+                queueSolver();
+                long queueend = System.currentTimeMillis();
+                double qduration = (queueend-queuestart) / 1000.0;
+                System.out.println("Total Runtime: " + qduration + " seconds");
+            }
+        } else {
+            if (Stack) { 
+                stackSolver();
+            } else if (Queue || Opt) { 
+                queueSolver();
+            }
+        }
+    }
 	//public Tile(int rownum, int rowcol, )
 	
-	public static void readMap(String filename) {
+	
+	public static void readtextMap(String filename) {
+		if(Outcoordinate) {
 		try {
 			File file = new File(filename);
 			Scanner scanner = new Scanner(file);
@@ -42,7 +86,7 @@ public class p2 {
 					for(int col = 0; col < numCols && col < row.length(); col++) {
 						char element = row.charAt(col);
 						Tile obj = new Tile(rowIndex, col, element);
-						//System.out.println(rowIndex + " " + col + " " + element);
+						//System.out.println(element + " " +rowIndex + " " + col);
 						currentMap.setTile(obj);
 					}
 					rowIndex++;
@@ -52,38 +96,43 @@ public class p2 {
 		} catch (FileNotFoundException e){
 			System.out.println(e);
 		}
-		
-	}
-	
-	public static void readCoordinateMap(String filename) {
-		try {
-			File file = new File(filename);
-			Scanner scanner = new Scanner(file);
-			
-			int numRows = scanner.nextInt();
-			int numCols = scanner.nextInt();
-			int numRooms = scanner.nextInt();
-			
-			int rowIndex = 0;
-			//process the map!
-			while(scanner.hasNextLine()) {
-				String row = scanner.nextLine();
-				//Find first char --> store as the element type for all
-				//then
-				if(row.length()>0) {
-					for(int col = 0; col < numCols && col < row.length(); col++) {
-						char element = row.charAt(col);
-						Tile obj = new Tile(rowIndex, col, element);
-					}
-				}
-			}
-			
-		} catch (FileNotFoundException e){
-			System.out.println("File not found");
 		}
 	}
 	
-	/* public static void queueSolver() {
+	public static void readCoordinateMap(String filename) {
+	    if (Incoordinate) {
+	        try {
+	            File file = new File(filename);
+	            Scanner scanner = new Scanner(file);
+
+	            int numRows = scanner.nextInt();
+	            int numCols = scanner.nextInt();
+	            int numRooms = scanner.nextInt();
+	            scanner.nextLine(); 
+
+	            currentMap = new Map(numRows, numCols, numRooms);
+
+	            while (scanner.hasNextLine()) {
+	                String line = scanner.nextLine();
+	                String[] parts = line.split(" ");
+
+	                if (parts.length == 4) {
+	                    char element = parts[0].charAt(0);
+	                    int row = Integer.parseInt(parts[1]);
+	                    int col = Integer.parseInt(parts[2]);
+	                    int room = Integer.parseInt(parts[3]); 
+	                    Tile obj = new Tile(row, col, element);
+	                    currentMap.setTile(obj);
+	                }
+	            }
+
+	        } catch (FileNotFoundException e) {
+	            System.out.println("File not found");
+	        }
+	    }
+	}
+	
+	public static void queueSolver() {
 	    if (currentMap == null) {
 	        System.out.println("Map not loaded.");
 	        return;
@@ -162,9 +211,19 @@ public class p2 {
 	    }
 
 	    // Print
+	    if(Outcoordinate) {
 	    System.out.println(activeMap.returnMaze());
+	    } else if(Incoordinate) {
+	    for (int i = 0; i < activeMap.getRows(); i++) {
+			for (int j = 0; j < activeMap.getCols(); j++) {
+			Tile t = activeMap.getTile(i, j, 0); 
+				char elementtype = t.getType();
+				System.out.println(elementtype + " " + i + " " + j + " 0");
+			}
+		}
+	    }
 	}	
-*/
+
 	// /*
 		public static void stackSolver() {
 			if(currentMap == null) {
@@ -202,68 +261,101 @@ public class p2 {
 			//Order of movement : NESW
 			int[][] direction = {{-1,0},{0,1},{1,0},{0,-1}};
 			boolean foundgoal = false;
-			while(!foundgoal && !allstack.isEmpty()) { //run until found
-				Tile checking = allstack.peek();
-				boolean alrmoved= false;
-				if(checking == goal$) {
-					foundgoal = true;
-					solstack.push(checking); //if the one youre checking is the goal then put that in the solution, otherwise...
-					break;
-				}
-				for(int[] dir: direction) {
-					int newrow = checking.getRow() + dir[0]; //move north
-					int newcol = checking.getCol() + dir[1]; // move East
-					Tile next = activeMap.getTile(newrow, newcol, 0);
-					if (newrow >= 0 && newrow < rows && newcol >= 0 && newcol < cols) {
-					
-					//if the next one is a . or $, and it is not visited, put it into the all stack and it goes to top of stack so its the new one you are checking
-					if(next != null && (next.getType() == '$' || next.getType() == '.') && (next.isVisited() == false)) {
-						allstack.push(next);
-						next.setVisited(true);
-						solstack.push(next);
-						//add an already moved to prevent back track. if you can't move, pop it and it will go back.
-						alrmoved = true;
-						break;
-					}
-				}
-					
-				}
-				if(alrmoved == false) {
-					allstack.pop();
-					if(solstack.isEmpty() == false) {
-						solstack.pop();
-					}
-				}
-				
-				//remove if already visited
-			
-				//if goal$ is found, print it out
-				if(foundgoal) {
-					while(solstack.isEmpty() == false) { //while still tiles in solution
-						Tile path = solstack.pop();
-						if(path.getType() == 'W') {
-							System.out.println("W" + " " + path.getRow() + " " + path.getCol());
-						}
-						if(path.getType() == '$') {
-							System.out.println("$" + " " + path.getRow() + " " + path.getCol());
-						}
-						if(path.getType() == '.') {
-							System.out.println("+" + " " + path.getRow() + " " + path.getCol());
-						}
-					}
-				}
-				//replace each . in the solution stack with a +
-			        while (!solstack.isEmpty()) {
-			            Tile path = solstack.pop();		
-			            if(path.getType() != 'W' && path.getType() != '$' && path.getType() != '@') {
-			                path.setType('+');
+			while (!foundgoal && !allstack.isEmpty()) {
+			    Tile checking = allstack.peek();
+			    boolean alrmoved = false;
+
+			    if (checking == goal$) {
+			        foundgoal = true;
+			        break;
+			    }
+
+			    for (int[] dir : direction) {
+			        int newrow = checking.getRow() + dir[0];
+			        int newcol = checking.getCol() + dir[1];
+			        //create tile for the next to be looked at that is neighboring
+			        Tile next = activeMap.getTile(newrow, newcol, 0);
+
+			        if (newrow >= 0 && newrow < rows && newcol >= 0 && newcol < cols) {
+			            if (next != null && (next.getType() == '$' || next.getType() == '.') && !next.isVisited()) {
+			                allstack.push(next);
+			                next.setVisited(true);
+			                next.setPrevious(checking);  // store previous tile in case of backtrack.
+			                alrmoved = true;
+			                break;
 			            }
 			        }
-				
+			    }
+
+			    if (!alrmoved) {
+			        allstack.pop();
+			    }
 			}
+			if (foundgoal) {
+			    Tile pathTile = goal$;
+			    while (pathTile != null && pathTile != startW) {
+			        pathTile.setType('+');
+			        pathTile = pathTile.getPrevious();
+			    }
+			    startW.setType('W');
+			    goal$.setType('$');
+			}
+				
+			//}
+			if(Outcoordinate) {
 			System.out.println(activeMap.returnMaze());
+			} else if(Incoordinate) {
+			for (int i = 0; i < activeMap.getRows(); i++) {
+				for (int j = 0; j < activeMap.getCols(); j++) {
+				Tile t = activeMap.getTile(i, j, 0); 
+					char elementtype = t.getType();
+					System.out.println(elementtype + " " + i + " " + j + " 0");
+				}
+			}
+			}
 		}
 		//*/
+		public static void printHelpMessage() {
+	        System.out.println("Maze Solver Program");
+	        System.out.println("Switches:");
+	        System.out.println("-s: Use stack-based approach.");
+	        System.out.println("-q: Use queue-based approach.");
+	        System.out.println("--Opt: Find shortest path (queue-based).");
+	        System.out.println("--Time: Print runtime.");
+	        System.out.println("--Incoordinate: Input is coordinate-based.");
+	        System.out.println("--Outcoordinate: Output is coordinate-based.");
+	        System.out.println("--Help: Print this help message.");
+	    }
+		public static void processCommandLineArgs(String[] args) {
+	        for (String arg : args) {
+	            switch (arg) {
+	                case "-s":
+	                    Stack = true;
+	                    break;
+	                case "-q":
+	                    Queue = true;
+	                    break;
+	                case "--Opt":
+	                    Opt = true;
+	                    break;
+	                case "--Time":
+	                    Time = true;
+	                    break;
+	                case "--Incoordinate":
+	                    Incoordinate = true;
+	                    break;
+	                case "--Outcoordinate":
+	                    Outcoordinate = true;
+	                    break;
+	                case "--Help":
+	                    Help = true;
+	                    break;
+	                default:
+	                    System.out.println("Unknown command-line argument: " + arg);
+	                    break;
+	            }
+	        }
+	    }
 }
 /*
  * first getting rows and columns
