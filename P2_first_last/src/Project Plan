@@ -1,7 +1,13 @@
-Map Poject
-Design plan
-map input: rows columns map#
-
-
-Read map in and store in the queue and stack
-put everything in stack and queue
+MAP PROJECT
+DESIGN PLAN
+Stack: 
+Create a stack of all the tiles and one of the only solutions
+Check each direction. If there is a way to go to a . or $, go and push to solution stack. 
+If you visit a Tile and then it has no where to go because of backtracking, pop off solution stack
+Queue:
+Create a queue
+Remove the front element using dequeue.
+Check if it is the goal tile, if it is then the solution is found.
+If not the goal tile, explore each one neighboring it, and add them to the end of the queue.
+Continue until the goal is found
+Once it is found, backtrack and then print out the solution path.

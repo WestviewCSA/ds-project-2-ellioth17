@@ -3,7 +3,7 @@ public class Tile {
 		private char type;
 		private boolean visited;
 		private String output;
-		
+		private Tile previous;
 		public Tile(int row, int col, char type) {
 			super();
 			this.row = row;
@@ -11,6 +11,7 @@ public class Tile {
 			this.type = type;
 			this.level = 0;
 			this.visited = false;
+			this.previous= null;
 		}
 		public int getRow() {
 			return row;
@@ -46,4 +47,12 @@ public class Tile {
 		public String toString() {
 			return getType() +"";
 		}
+		public void setPrevious(Tile prev) {
+		    this.previous = prev;
+		}
+		public Tile getPrevious() {
+	        return this.previous;
+	    }
+
+		
 }
