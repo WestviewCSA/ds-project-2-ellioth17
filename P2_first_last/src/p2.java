@@ -14,7 +14,7 @@ public class p2 {
 	//public ArrayList[][] stackx = new ArrayList[][](); //why broke
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-	    String filename = "H:\\git\\ds-project-2-ellioth17\\P2_first_last\\src\\Maze1";
+	    String filename = "C:\\Users\\Elliot Ho\\git\\New folder\\ds-project-2-ellioth17\\P2_first_last\\src\\Maze2";
 		readMap(filename);
 		stackSolver();
 	}
@@ -45,7 +45,7 @@ public class p2 {
 					rowIndex++;
 				}
 			}
-			//asdflaskdjfa
+			
 		} catch (FileNotFoundException e){
 			System.out.println(e);
 		}
@@ -102,6 +102,7 @@ public class p2 {
 		int cols = activeMap.getCols();
 		Tile startW = null;
 		Tile goal$ = null;
+		//find start and end
 		for (int i = 0; i < rows; i++) {
 	        for (int j = 0; j < cols; j++) {
 	            Tile t = activeMap.getTile(i, j, 0);
@@ -149,6 +150,7 @@ public class p2 {
 				}
 			}
 			}
+			
 			//remove if already visited
 			if(alrmoved == false) {
 				allstack.pop();
@@ -171,19 +173,15 @@ public class p2 {
 					}
 				}
 			}*/
-			if (foundgoal) {
-		        
 		        while (!solstack.isEmpty()) {
-		            Tile path = solstack.pop();
-		            System.out.println("+ " + path.getRow() + " " + path.getCol() + " 0");
-		            if (path.getType() != 'W' && path.getType() != '$') {
+		            Tile path = solstack.pop();		
+		            if(path.getType() == '.') {
 		                path.setType('+');
 		            }
 		        }
-		        
-		    }
-			//System.out.println(activeMap.returnMaze());
+			
 		}
+		System.out.println(activeMap.returnMaze());
 	}
 }
 /*
