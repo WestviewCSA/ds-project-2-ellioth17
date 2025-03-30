@@ -11,3 +11,6 @@ Check if it is the goal tile, if it is then the solution is found.
 If not the goal tile, explore each one neighboring it, and add them to the end of the queue.
 Continue until the goal is found
 Once it is found, backtrack and then print out the solution path.
+Optimal:will be whichever rtakes less time on average.
+Time: Create a method that takes the time at before running each solver. 
+Then it will run the solver, then take the time after. Find the diff between the times and return it.

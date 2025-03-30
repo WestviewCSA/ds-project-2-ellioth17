@@ -11,22 +11,19 @@ public class p2 {
 	static boolean Opt = false;
 	static boolean Time = true;;
 	static boolean Help = false;
-	static boolean Stack = true;
-	static boolean Queue = false;
+	static boolean Stack = false;
+	static boolean Queue = true;
 	static Map currentMap;
-	static Map altMap;
-	//public ArrayList[][] stackx = new ArrayList[][](); //why broke
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-	    String filename = "C:\\Users\\Elliot Ho\\git\\New folder\\ds-project-2-ellioth17\\P2_first_last\\TEST\\TEST03";
-	    //processCommandLineArgs(args);
+	    String filename = "C:\\Users\\Elliot Ho\\git\\New folder\\ds-project-2-ellioth17\\P2_first_last\\TEST\\TEST10";
 
         if (Help) {
             printHelpMessage();
             System.exit(0);
         }
 
-        if ((Stack && Queue) || (Stack && Opt)) {
+        if ((Stack && Queue) || (Stack && Opt) || (Queue && Opt)) {
             System.out.println("Error: Only one of --Stack, --Queue, or --Opt is able to be specified.");
             System.exit(-1);
         }
@@ -40,28 +37,37 @@ public class p2 {
 	    } else if (Outcoordinate) {
 	        readtextMap(filename);
 	    }
-	 // Queuesolver time
+	 // Time to solve each case. Takes the start and end and finds the difference, then prints the difference in those times which is the duration.
+	    //Long is for a longer double/
 	    if (Time) { 
-            if (Stack) { 
-                long stackstart = System.currentTimeMillis();
-                stackSolver();
-                long stackend = System.currentTimeMillis();
-                double sduration = (stackend - stackstart) / 1000.0;
-                System.out.println("Total Runtime: " + sduration + " seconds");
-            } else if (Queue || Opt) {
-                long queuestart = System.currentTimeMillis();
-                queueSolver();
-                long queueend = System.currentTimeMillis();
-                double qduration = (queueend-queuestart) / 1000.0;
-                System.out.println("Total Runtime: " + qduration + " seconds");
-            }
-        } else {
-            if (Stack) { 
-                stackSolver();
-            } else if (Queue || Opt) { 
-                queueSolver();
-            }
-        }
+	        if (Stack) { 
+	            long stackstart = System.currentTimeMillis();
+	            solveStack(); //takes the time at the start, then runs it, then takes the time. finds the difference in those two times.
+	            long stackend = System.currentTimeMillis();
+	            double sduration = (stackend - stackstart) / 1000.0;
+	            System.out.println("Total Runtime: " + sduration + " seconds");
+	        } else if (Queue) {
+	            long queuestart = System.currentTimeMillis();
+	            solveQueue();
+	            long queueend = System.currentTimeMillis();
+	            double qduration = (queueend - queuestart) / 1000.0;
+	            System.out.println("Total Runtime: " + qduration + " seconds");
+	        } else if (Opt) {  
+	            long optstart = System.currentTimeMillis();
+	            solveOpt();  // This would basically call queue solver. These are the same.
+	            long optend = System.currentTimeMillis();
+	            double optduration = (optend - optstart) / 1000.0;
+	            System.out.println("Total Runtime: " + optduration + " seconds");
+	        }
+	    } else {
+	        if (Stack) { 
+	        	 solveStack();
+	        } else if (Queue) { 
+	        	 solveQueue();
+	        } else if (Opt) {  
+	            solveOpt();  //queue solve.
+	        }
+	    }
     }
 	//public Tile(int rownum, int rowcol, )
 	
@@ -131,8 +137,11 @@ public class p2 {
 	        }
 	    }
 	}
-	
-	public static void queueSolver() {
+	public static void solveOpt() {
+		 solveQueue(); //QUEUE SOLVER IS THE OPTIMAL BECAUSE ON AVERAGE IT IS HAVING A LOWER RUN TIME THAN QUEUE.THIS TYPE OF SOLVING METHOD  DOES NOT GO AS DEEP AND 
+		 //WILL HAVE A FASTER RUNTIME
+	}
+	public static void solveQueue() {
 	    if (currentMap == null) {
 	        System.out.println("Map not loaded.");
 	        return;
@@ -181,7 +190,7 @@ public class p2 {
 	            break;
 	        }
 
-	        // Check each direction.
+	        // Check each direction
 	        for (int[] dir : direction) {
 	            int newRow = checking.getRow() + dir[0];
 	            int newCol = checking.getCol() + dir[1];
@@ -209,6 +218,10 @@ public class p2 {
 	        startW.setType('W');  
 	        goal$.setType('$');   
 	    }
+	    else {
+	        // If no solution was found, print the store closed message
+	        System.out.println("The Wolverine Store is closed.");
+	    }
 
 	    // Print
 	    if(Outcoordinate) {
@@ -218,19 +231,20 @@ public class p2 {
 			for (int j = 0; j < activeMap.getCols(); j++) {
 			Tile t = activeMap.getTile(i, j, 0); 
 				char elementtype = t.getType();
+				if(elementtype == '+') {
 				System.out.println(elementtype + " " + i + " " + j + " 0");
+				}
 			}
 		}
 	    }
 	}	
 
 	// /*
-		public static void stackSolver() {
+		public static void solveStack() {
 			if(currentMap == null) {
 				System.out.println("Map not loaded.");
 				return;
 			}
-			//outcoordinate should be true here
 			Map activeMap;
 			activeMap = currentMap;
 			int rows = activeMap.getRows();
@@ -300,6 +314,10 @@ public class p2 {
 			    startW.setType('W');
 			    goal$.setType('$');
 			}
+			else {
+		        // If no solution was found, print the store closed message
+		        System.out.println("The Wolverine Store is closed.");
+		    }
 				
 			//}
 			if(Outcoordinate) {
@@ -309,7 +327,9 @@ public class p2 {
 				for (int j = 0; j < activeMap.getCols(); j++) {
 				Tile t = activeMap.getTile(i, j, 0); 
 					char elementtype = t.getType();
+					if(elementtype == '+') {
 					System.out.println(elementtype + " " + i + " " + j + " 0");
+					}
 				}
 			}
 			}
@@ -318,43 +338,13 @@ public class p2 {
 		public static void printHelpMessage() {
 	        System.out.println("Maze Solver Program");
 	        System.out.println("Switches:");
-	        System.out.println("-s: Use stack-based approach.");
-	        System.out.println("-q: Use queue-based approach.");
+	        System.out.println("-Stack: Use stack-based approach.");
+	        System.out.println("-Queue: Use queue-based approach.");
 	        System.out.println("--Opt: Find shortest path (queue-based).");
 	        System.out.println("--Time: Print runtime.");
 	        System.out.println("--Incoordinate: Input is coordinate-based.");
 	        System.out.println("--Outcoordinate: Output is coordinate-based.");
 	        System.out.println("--Help: Print this help message.");
-	    }
-		public static void processCommandLineArgs(String[] args) {
-	        for (String arg : args) {
-	            switch (arg) {
-	                case "-s":
-	                    Stack = true;
-	                    break;
-	                case "-q":
-	                    Queue = true;
-	                    break;
-	                case "--Opt":
-	                    Opt = true;
-	                    break;
-	                case "--Time":
-	                    Time = true;
-	                    break;
-	                case "--Incoordinate":
-	                    Incoordinate = true;
-	                    break;
-	                case "--Outcoordinate":
-	                    Outcoordinate = true;
-	                    break;
-	                case "--Help":
-	                    Help = true;
-	                    break;
-	                default:
-	                    System.out.println("Unknown command-line argument: " + arg);
-	                    break;
-	            }
-	        }
 	    }
 }
 /*
